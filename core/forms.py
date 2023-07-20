@@ -11,4 +11,6 @@ class TaskFrom(forms.ModelForm):
     class Meta : 
         model = Task 
         fields = ['task' , 'finish_at']
-        
+        widgets = {
+            'finish_at': forms.DateTimeInput(attrs={'type':'date'}),
+        }
