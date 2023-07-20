@@ -10,13 +10,12 @@ from .forms import TaskFrom
 from .models import Task
 
 class logout( LoginRequiredMixin,LogoutView) :
-    redirect_field_name = None
+    redirect_field_name = None 
     next_page = 'login'
 
 class Login(View) :
      def get( self, request) :
-            form  = AuthenticationForm()
-            return  render(request  , "log/login.html" , locals())
+        return  render(request  , "log/login.html" , {'form': AuthenticationForm()})
 
      def post( self, request) : 
             form  = AuthenticationForm(request.POST)
@@ -41,7 +40,7 @@ class Register(View):
         if form.is_valid(): 
             user = form.save() 
             login(request ,user )  
-            return    redirect('home')
+            return redirect('home')
         else : 
             return redirect('register')
         
@@ -62,6 +61,7 @@ class Home (View , LoginRequiredMixin):
         else : 
             messages.error(request  , 'something invalid')
             return redirect('home')
+
 class DeleteTask(  LoginRequiredMixin, View):
     def get(self , request , pk ): 
         return render(request , 'delete.html')
@@ -71,3 +71,17 @@ class DeleteTask(  LoginRequiredMixin, View):
          task.delete()
          messages.success(request  , 'task has been deleted')
          return redirect('home')
+    
+class UpdateTask(  LoginRequiredMixin, View):
+    def get(self , request , pk ): 
+        task = get_object_or_404(request.user.tasks , pk=pk)
+        form = TaskFrom(instance=task)
+        return render(request , 'update.html' , locals())
+    
+    def post(self ,request , pk): 
+         task = get_object_or_404(request.user.tasks , pk=pk)
+         form = TaskFrom( request.POST, instance=task)
+         form.save()
+         messages.success(request  , 'task has been update')
+         return redirect('home')
+    
