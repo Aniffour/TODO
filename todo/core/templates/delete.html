@@ -1,16 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Delete Task !</title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% block title %}Delete Task !{% endblock title %}
+{% block content %}
     <form  method="post">
         {% csrf_token %}
-        are you sure ?
-        <button type="submit">Yes</button>   
+        <div class="alert alert-danger" role="alert">
+            are you sure ?
+        <button type="submit">Yes</button>  
+        </div>
+          
+         
     </form>
           
-</body>
-</html>
+{% endblock content %}

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Login | TODO</title>
 </head>
 <body>
 
@@ -35,6 +35,8 @@
 
     </div>
     <button class="w-100 btn btn-lg" type="submit">Login</button>
+    <a href="{% url 'register' %}" style="color: black; margin: 2px;">register</a>
+    <a href="{% url 'password_reset' %}" style="color: black; margin: 2px;">Reset password</a>
     {% for msg in messages %}
     {{msg}}
     {% endfor %}

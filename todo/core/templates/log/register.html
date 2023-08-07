@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Register | TODO</title>
 </head>
 <body>
 
@@ -48,9 +48,12 @@
         {% endfor %}
       {% endfor %}
     {% endif %}
+    <a href="{% url 'login' %}" style="color: black; margin: 2px;">login</a>
+    
   </form>
-
-  <p class="copyright">&copy; 2021</p>
+  {% for msg in messages %}
+  {{msg}}
+  {% endfor %}
 </main>
 </body>
 </html>

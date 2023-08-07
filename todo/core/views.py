@@ -8,12 +8,16 @@ from django.contrib.auth.forms  import AuthenticationForm
 from django.contrib import messages
 from .forms import TaskFrom
 from .models import Task
+from .decorators import notAuth
+from django.contrib.auth.models import User
+from verify_email.email_handler import send_verification_email
 
 class logout( LoginRequiredMixin,LogoutView) :
     redirect_field_name = None 
     next_page = 'login'
 
 class Login(View) :
+     @notAuth
      def get( self, request) :
         return  render(request  , "log/login.html" , {'form': AuthenticationForm()})
 
@@ -30,6 +34,7 @@ class Login(View) :
 
 
 class Register(View): 
+    @notAuth
     def get(self  , request) :
         print(request.user)
         form = UserCreateForm()
@@ -38,16 +43,32 @@ class Register(View):
     def post (self, request) : 
         form =UserCreateForm(request.POST)
         if form.is_valid(): 
-            user = form.save() 
-            login(request ,user )  
+            inactive_user = send_verification_email(request, form )
             return redirect('home')
         else : 
             return redirect('register')
         
 
 
+class DeleteAcc (LoginRequiredMixin , View): 
 
-class Home (View , LoginRequiredMixin): 
+    def get(slef  ,request) : 
+        return render(request , 'log/delete.html')
+    
+    def post(slef,request) :
+        user = User.objects.get(pk = request.user.pk)
+        checkPass = user.check_password(raw_password=request.POST.get('pass'))
+        if checkPass : 
+            user.delete()
+            messages.success(request, 'Account has been deleted')
+            return redirect('login')
+        else :
+            messages.error(request, 'Password is wrong')
+            return redirect('deleteACC')
+
+
+
+class Home (LoginRequiredMixin,View ): 
     def get(self , request ): 
         tasks = request.user.tasks.filter(user=request.user)
         return render(request , 'home.html' , locals())
@@ -85,3 +106,7 @@ class UpdateTask(  LoginRequiredMixin, View):
          messages.success(request  , 'task has been update')
          return redirect('home')
     
+
+
+
+

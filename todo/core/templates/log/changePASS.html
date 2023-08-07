@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}Change Password{% endblock title %}
+{% block content %}
+<form action="" class="row g-3" method="POST">{% csrf_token %}
+  
+<div class="col-md-6">
+        <label for="inputPassword4" class="form-label">Password</label>
+        <input type="password" name='old_password' class="form-control" id="inputPassword4">
+      </div>
+      <br>
+      <div class="col-md-6">
+        <label for="inputPassword4" class="form-label">New Password</label>
+        <input type="password" name='new_password1' class="form-control" id="inputPassword4">
+      </div>
+      <br>
+      <div class="col-md-6">
+        <label for="inputPassword4" class="form-label">Confirm Password</label>
+        <input type="password" name='new_password2' class="form-control" id="inputPassword4">
+      </div>
+      <br>
+   
+      <div class="col-12">
+        <button type="submit" class="btn btn-primary">Change Password</button>
+      </div>
+</div>
+</form>
+{% endblock content %}
